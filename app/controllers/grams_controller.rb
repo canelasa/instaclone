@@ -29,7 +29,7 @@ class GramsController < ApplicationController
       return render :edit, status: :unprocessable_entity
     end
   end
-  
+
   def create
     @gram = Gram.create(gram_params.merge(user: current_user))
     if @gram.valid?
@@ -37,6 +37,13 @@ class GramsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @gram = Gram.find_by_id(params[:id])
+    return render_not_found if @gram.blank?
+    @gram.destroy
+    redirect_to root_path
   end
 
   private
